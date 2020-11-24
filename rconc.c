@@ -304,6 +304,9 @@ main(int argc, char *argv[])
 		return EX_UNAVAILABLE;
 	}
 
+	/* disable tab completion for filenames */
+	rl_bind_key('\t', rl_insert);
+
 	/* main program loop */
 	char *input;
 	struct packet pkt;
