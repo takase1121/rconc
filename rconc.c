@@ -20,7 +20,6 @@
 /* MACROS */
 
 #define PROGRAM_NAME "rconc"
-#define VERSION      "0.0.1"
 
 #define CMD_MAX_LEN  1446
 #define RESPONSE_MAX_LEN 4096
