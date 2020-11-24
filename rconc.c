@@ -303,6 +303,9 @@ main(int argc, char *argv[])
 		return EX_UNAVAILABLE;
 	}
 
+	/* initialize input history */
+	using_history();
+
 	/* disable tab completion for filenames */
 	rl_bind_key('\t', rl_insert);
 
@@ -321,6 +324,8 @@ main(int argc, char *argv[])
 			break;
 		}
 
+		add_history(input);
+
 		/* send command to server */
 		populate_packet(&pkt, PKTTYPE_COMMAND, input);
 		send_packet(&pkt);
@@ -336,6 +341,8 @@ main(int argc, char *argv[])
 
 		free(input);
 	}
+
+	clear_history();
 
 	return 0;
 }
