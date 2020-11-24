@@ -303,11 +303,15 @@ main(int argc, char *argv[])
 	struct packet pkt;
 	while ((input = readline(PROMPT)) != NULL) {
 		/* ignore blank lines */
-		if (input[0] == '\0')
+		if (input[0] == '\0') {
+			free(input);
 			continue;
+		}
 
-		if (!strcmp(input, "quit") || !strcmp(input, "exit"))
+		if (!strcmp(input, "quit") || !strcmp(input, "exit")) {
+			free(input);
 			break;
+		}
 
 		/* send command to server */
 		populate_packet(&pkt, PKTTYPE_COMMAND, input);
@@ -317,8 +321,12 @@ main(int argc, char *argv[])
 		if (recv_packet(&pkt) != NULL && pkt.type == PKTTYPE_RESPONSE && pkt.length > 0)
 			puts(pkt.payload);
 
-		if (!strcmp(input, "stop"))
+		if (!strcmp(input, "stop")) {
+			free(input);
 			break;
+		}
+
+		free(input);
 	}
 
 	return 0;
