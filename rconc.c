@@ -23,6 +23,7 @@
 #define VERSION      "0.0.1"
 
 #define CMD_MAX_LEN  1446
+#define RESPONSE_MAX_LEN 4096
 #define RECV_TIMEOUT 5000
 
 #define PROMPT "\033[1m»\033[0m "
@@ -44,7 +45,7 @@ struct packet {
 	int32_t length;
 	int32_t request_id;
 	enum packet_type type;
-	char payload[CMD_MAX_LEN + 1]; /* must end in two NUL characters */
+	char payload[RESPONSE_MAX_LEN + 1]; /* must end in two NUL characters */
 };
 
 /* GLOBAL VARIABLES */
@@ -183,6 +184,11 @@ recv_packet(struct packet *pkt)
 	} else if ((size_t)ret < sizeof(pkt->length) || pkt->length < 10) {
 		fputs("\033[01;31merror\033[0m: malformed packet\n", stderr);
 		return NULL;
+	}
+
+	if (pkt->length > RESPONSE_MAX_LEN) {
+		fprintf(stderr, "\033[01;31merror\033[0m: response too long (%d bytes). maximum allowed is %d. some data may be lost.\n", pkt->length, RESPONSE_MAX_LEN);
+		pkt->length = RESPONSE_MAX_LEN;
 	}
 
 	received = 0;
