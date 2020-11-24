@@ -1,6 +1,8 @@
 PREFIX ?= /usr/local
-CC = cc
-CFLAGS = -std=c99 -Wall -Wextra -pedantic -Os
+
+LDLIBS = -lreadline -lc
+
+CFLAGS = -Wall -Wextra -pedantic -Os
 LDFLAGS = -s
 
 .PHONY: all
