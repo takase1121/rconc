@@ -1,3 +1,22 @@
+/*
+ * rconc - a simple RCON client
+ * Copyright (C) 2020  Kian Kasad
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ */
+
 #include <errno.h>
 #include <getopt.h>
 #include <netdb.h>
@@ -20,6 +39,12 @@
 /* MACROS */
 
 #define PROGRAM_NAME "rconc"
+#define COPYRIGHT \
+	"rconc, Copyright (C) 2020 Kian Kasad\n" \
+	"rconc comes with ABSOLUTELY NO WARRANTY.\n" \
+	"This is free software, and you are welcome\n" \
+	"to redistribute it under certain conditions;\n" \
+	"see the provided LICENSE file for details.\n\n"
 
 #define CMD_MAX_LEN  1446
 #define RESPONSE_MAX_LEN 4096
@@ -228,7 +253,7 @@ send_packet(const struct packet *pkt)
 void
 usage()
 {
-	fputs("usage: " PROGRAM_NAME " [-H host] [-p port] [-P password]\n", stderr);
+	fputs("usage: " PROGRAM_NAME " [-q] [-H host] [-p port] [-P password]\n", stderr);
 }
 
 int
@@ -237,6 +262,7 @@ main(int argc, char *argv[])
 	char *host = NULL;
 	char *port = NULL;
 	char *password = NULL;
+	bool copyright = true;
 
 	/* `--help' option prints usage info */
 	for (int i = 1; i < argc; i++) {
@@ -248,9 +274,13 @@ main(int argc, char *argv[])
 
 	/* parse options */
 	int optchar;
-	while ((optchar = getopt(argc, argv, "hH:p:P:")) != -1) {
+	while ((optchar = getopt(argc, argv, "qhH:p:P:")) != -1) {
 		switch (optchar) {
+		case 'q':
+			copyright = false;
+			break;
 		case 'h':
+			fputs(COPYRIGHT, stderr);
 			usage();
 			return EX_USAGE;
 		case 'H':
@@ -263,10 +293,14 @@ main(int argc, char *argv[])
 			password = optarg;
 			break;
 		default:
+			fputs(COPYRIGHT, stderr);
 			usage();
 			return EX_USAGE;
 		}
 	}
+
+	if (copyright)
+		fputs(COPYRIGHT, stderr);
 
 	if (host == NULL) {
 		host = DEFAULT_HOST;
