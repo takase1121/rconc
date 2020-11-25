@@ -236,7 +236,7 @@ send_packet(const struct packet *pkt)
 	int ret;
 
 	while (sent < length) {
-		ret = send(sock, pkt, length, 0);
+		ret = send(sock, (char *)pkt + sent, length - sent, 0);
 
 		if (ret == -1) {
 			perror("\033[01;31merror\033[0m: failed to send packet");
