@@ -2,7 +2,11 @@ PREFIX ?= /usr/local
 
 LDLIBS = -lreadline -lc
 
-CFLAGS = -Wall -Wextra -pedantic -Os
+OPTIMIZATION ?= size
+CFLAGS_OPTIMIZE_size = -Os
+CFLAGS_OPTIMIZE_speed = -O3 -march=native -mtune=native
+
+CFLAGS = -Wall -Wextra -pedantic $(CFLAGS_OPTIMIZE_$(OPTIMIZATION))
 LDFLAGS = -s
 
 .PHONY: all
