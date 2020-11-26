@@ -95,6 +95,7 @@ close_connection()
 {
 	if (sock >= 0)
 		close(sock);
+	sock = 0;
 }
 
 /* close connection when exiting */
