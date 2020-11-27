@@ -219,7 +219,10 @@ recv_packet(struct packet *pkt)
 	received = 0;
 	while (received < (ssize_t)pkt->length) {
 		ret = recv(sock, (char *)pkt + sizeof(pkt->length) + received, pkt->length - received, 0);
-		if (ret <= 0) {
+		if (ret < 0) {
+			perror("\033[01;31merror\033[0m: socket error");
+			return NULL;
+		} else if (ret == 0) {
 			fputs("\033[01;31merror\033[0m: connection lost\n", stderr);
 			return NULL;
 		}
