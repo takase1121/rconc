@@ -4,7 +4,9 @@ LDLIBS = -lreadline -lc
 
 OPTIMIZATION ?= size
 CFLAGS_OPTIMIZE_size = -Os
-CFLAGS_OPTIMIZE_speed = -O3 -march=native -mtune=native
+CFLAGS_OPTIMIZE_speed = -O3
+CFLAGS_OPTIMIZE_native = -march=native -mtune=native
+CFLAGS_OPTIMIZE_speed_native = -O3 -march=native -mtune=native
 
 CFLAGS = -Wall -Wextra -pedantic $(CFLAGS_OPTIMIZE_$(OPTIMIZATION))
 LDFLAGS = -s
