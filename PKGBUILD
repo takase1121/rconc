@@ -10,7 +10,7 @@ depends=('readline')
 makedepends=('git')
 provides=("${pkgname%-git}")
 conflicts=("${pkgname%-git}")
-source=("git+$url")
+source=("git+$url.git")
 sha256sums=('SKIP')
 
 pkgver() {
