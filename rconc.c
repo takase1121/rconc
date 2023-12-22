@@ -18,6 +18,7 @@
  * 02110-1301, USA.
  */
 
+#ifndef __COSMOPOLITAN__
 #include <errno.h>
 #include <getopt.h>
 #include <netdb.h>
@@ -31,11 +32,11 @@
 #include <time.h>
 #include <unistd.h>
 
-#include <readline/history.h>
-#include <readline/readline.h>
-
 #include <sys/socket.h>
 #include <sys/types.h>
+#endif
+
+#include "bestline.h"
 
 /* MACROS */
 
